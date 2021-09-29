@@ -30,8 +30,9 @@ dependencies {
     implementation("io.micronaut.kotlin:micronaut-kotlin-runtime:3.0.0")
     implementation("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
-    runtimeOnly("ch.qos.logback:logback-classic:1.2.6")
     implementation("io.micronaut:micronaut-validation:3.0.1")
+    testImplementation("io.kotest:kotest-assertions-core")
+    runtimeOnly("ch.qos.logback:logback-classic:1.2.6")
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin:2.12.5")
 }
 
