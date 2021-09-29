@@ -32,9 +32,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
     runtimeOnly("ch.qos.logback:logback-classic:1.2.6")
     implementation("io.micronaut:micronaut-validation:3.0.1")
-
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin:2.12.5")
-
 }
 
 
@@ -56,6 +54,4 @@ tasks {
             jvmTarget = "1.8"
         }
     }
-
-
 }
