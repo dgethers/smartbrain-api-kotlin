@@ -1,3 +1,9 @@
 micronaut:
   application:
     name: smartbrainApiKotlin
+  env:
+    deduction: false
+
+clarifai:
+  workflowId: Demographics
+  apiKey:
