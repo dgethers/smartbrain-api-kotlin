@@ -39,6 +39,7 @@ dependencies {
     implementation("io.micronaut:micronaut-validation:3.0.1")
     implementation("io.grpc:grpc-kotlin-stub:0.1.2")
     implementation("io.micronaut.grpc:micronaut-grpc-client-runtime:3.0.0")
+    implementation("com.clarifai:clarifai-grpc:7.9.0")
     testImplementation("io.kotest:kotest-assertions-core")
     runtimeOnly("ch.qos.logback:logback-classic:1.2.6")
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin:2.12.5")
