@@ -41,6 +41,7 @@ dependencies {
     implementation("io.micronaut.grpc:micronaut-grpc-client-runtime:3.0.0")
     implementation("com.clarifai:clarifai-grpc:7.9.0")
     testImplementation("io.kotest:kotest-assertions-core")
+    testImplementation("io.mockk:mockk:1.12.0")
     runtimeOnly("ch.qos.logback:logback-classic:1.2.6")
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin:2.12.5")
 }
@@ -82,21 +83,4 @@ protobuf {
     protoc {
         artifact = "com.google.protobuf:protoc:${protocVersion}"
     }
-/*
-    plugins {
-        id("grpc") {
-            artifact = "io.grpc:protoc-gen-grpc-java:${grpcVersion}"
-        }
-        id("grpckt") {
-            artifact = "io.grpc:protoc-gen-grpc-kotlin:${grpcKotlinVersion}"
-        }
-    }
-*/
-
-    /*generateProtoTasks {
-        all() * . plugins {
-            grpc {}
-            grpckt {}
-        }
-    }*/
 }
