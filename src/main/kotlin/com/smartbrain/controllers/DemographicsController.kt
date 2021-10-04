@@ -2,6 +2,7 @@ package com.smartbrain.controllers
 
 import com.smartbrain.models.ImageRequest
 import com.smartbrain.services.ClarifaiService
+import com.smartbrain.services.GrpcClarifaiService
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.MediaType.APPLICATION_JSON
 import io.micronaut.http.annotation.*
