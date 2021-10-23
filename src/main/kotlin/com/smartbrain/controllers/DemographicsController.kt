@@ -3,6 +3,7 @@ package com.smartbrain.controllers
 import com.smartbrain.models.ImageRequest
 import com.smartbrain.services.ClarifaiService
 import com.smartbrain.services.GrpcClarifaiService
+import com.smartbrain.services.Model
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.MediaType.APPLICATION_JSON
 import io.micronaut.http.annotation.*
@@ -16,10 +17,9 @@ class DemographicsController(@Inject val clarifaiService: ClarifaiService) {
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
     //todo: add validation to ensure imageUrl is not null
-    fun predictDemographics(@Body imageRequest: ImageRequest): HttpResponse<String> {
+    fun predictDemographics(@Body imageRequest: ImageRequest): HttpResponse<List<Model>> {
 
-        clarifaiService.submitImageUrlToClarifaiDemographicsWorkflow(imageRequest.imageUrl)
-        return HttpResponse.ok()
+        return HttpResponse.ok(clarifaiService.submitImageUrlToClarifaiDemographicsWorkflow(imageRequest.imageUrl))
     }
 
 }

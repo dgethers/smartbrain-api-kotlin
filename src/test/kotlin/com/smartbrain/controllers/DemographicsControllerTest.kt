@@ -22,18 +22,20 @@ class DemographicsControllerTest(@Inject @Client("/") var client: HttpClient) : 
 
     lateinit var clarifaiService: GrpcClarifaiService
 
-    beforeTest {
-        clarifaiService = mockk()
-    }
+//    beforeTest {
+//        clarifaiService = mockk()
+//    }
 
     should("submit the url to Clarifai service for predictions") {
         val imageUrl = "https://cdn7.dissolve.com/p/D430_35_159/D430_35_159_1200.jpg"
-        every { clarifaiService.submitImageUrlToClarifaiDemographicsWorkflow(imageUrl) } returns emptyList()
+//        every { clarifaiService.submitImageUrlToClarifaiDemographicsWorkflow(imageUrl) } returns emptyList()
 
         val response = client.toBlocking().exchange(
             POST("/demographics", ImageRequest(imageUrl)),
             ImageRequest::class.java
         )
+
+        println(response)
 
         response.status shouldBe OK
     }
