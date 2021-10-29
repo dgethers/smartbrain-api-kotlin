@@ -11,7 +11,6 @@ import jakarta.inject.Singleton
 @Singleton
 class GrpcClarifaiService(@Inject val clarifaiConfigurations: ClarifaiConfigurations) : ClarifaiService {
 
-    //todo: remove println and return model
     override fun submitImageUrlToClarifaiDemographicsWorkflow(imageUrl: String): List<Model> {
 
         val stub: V2Grpc.V2BlockingStub = V2Grpc.newBlockingStub(ClarifaiChannel.INSTANCE.grpcChannel)
@@ -37,13 +36,9 @@ class GrpcClarifaiService(@Inject val clarifaiConfigurations: ClarifaiConfigurat
 
         val results = mutableListOf<Model>()
         postWorkflowResultsResponse.resultsList.map {
-//            println("ResultSet")
             it.outputsList.map { output ->
-//                println("model: ${output.model}")
 
                 output.data.regionsList.map { region ->
-//                    println("new region")
-//                    println("bounding box: ${region.regionInfo.boundingBox.allFields}")
                     val regionBoundingBox = region.regionInfo.boundingBox
                     val resultBoundingBox = BoundingBox(
                         regionBoundingBox.leftCol, regionBoundingBox.topRow, regionBoundingBox.rightCol,
@@ -52,7 +47,6 @@ class GrpcClarifaiService(@Inject val clarifaiConfigurations: ClarifaiConfigurat
 
                     val resultConcepts = mutableListOf<Pair<String, Float>>()
                     region.data.conceptsList.map { concept ->
-//                        println("concept name: ${concept.name} with values: ${concept.value}")
                         resultConcepts.add(Pair(concept.name, concept.value))
                     }
                     results.add(Model(output.model.id, output.model.name, resultBoundingBox, resultConcepts))
