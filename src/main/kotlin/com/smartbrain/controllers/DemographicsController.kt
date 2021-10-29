@@ -1,6 +1,7 @@
 package com.smartbrain.controllers
 
 import com.smartbrain.models.ImageRequest
+import com.smartbrain.services.BoundingBox
 import com.smartbrain.services.ClarifaiService
 import com.smartbrain.services.GrpcClarifaiService
 import com.smartbrain.services.Model
@@ -17,9 +18,11 @@ class DemographicsController(@Inject val clarifaiService: ClarifaiService) {
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
     //todo: add validation to ensure imageUrl is not null
-    fun predictDemographics(@Body imageRequest: ImageRequest): HttpResponse<List<Model>> {
+    fun predictDemographics(@Body imageRequest: ImageRequest): HttpResponse<List<Pair<BoundingBox, MutableList<Model>>>> {
 
-        return HttpResponse.ok(clarifaiService.submitImageUrlToClarifaiDemographicsWorkflow(imageRequest.imageUrl))
+        val demographicResponse = clarifaiService.submitImageUrlToClarifaiDemographicsWorkflow(imageRequest.imageUrl)
+
+        return HttpResponse.ok(demographicResponse)
     }
 
 }

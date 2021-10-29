@@ -11,7 +11,7 @@ import jakarta.inject.Singleton
 @Singleton
 class GrpcClarifaiService(@Inject val clarifaiConfigurations: ClarifaiConfigurations) : ClarifaiService {
 
-    override fun submitImageUrlToClarifaiDemographicsWorkflow(imageUrl: String): List<Model> {
+    override fun submitImageUrlToClarifaiDemographicsWorkflow(imageUrl: String): List<Pair<BoundingBox, MutableList<Model>>> {
 
         val stub: V2Grpc.V2BlockingStub = V2Grpc.newBlockingStub(ClarifaiChannel.INSTANCE.grpcChannel)
             .withCallCredentials(ClarifaiCallCredentials(clarifaiConfigurations.apiKey))
@@ -34,7 +34,7 @@ class GrpcClarifaiService(@Inject val clarifaiConfigurations: ClarifaiConfigurat
             throw RuntimeException("Post workflow results failed, status: " + postWorkflowResultsResponse.status)
         }
 
-        val results = mutableListOf<Model>()
+        val boundingBox = mutableMapOf<BoundingBox, MutableList<Model>>()
         postWorkflowResultsResponse.resultsList.map {
             it.outputsList.map { output ->
 
@@ -45,24 +45,29 @@ class GrpcClarifaiService(@Inject val clarifaiConfigurations: ClarifaiConfigurat
                         regionBoundingBox.bottomRow
                     )
 
-                    val resultConcepts = mutableListOf<Pair<String, Float>>()
+                    val concepts = mutableListOf<Concept>()
                     region.data.conceptsList.map { concept ->
-                        resultConcepts.add(Pair(concept.name, concept.value))
+                        concepts.add(Concept(concept.name, concept.value))
                     }
-                    results.add(Model(output.model.id, output.model.name, resultBoundingBox, resultConcepts))
+
+                    if (!boundingBox.containsKey(resultBoundingBox)) {
+                        boundingBox.put(resultBoundingBox, mutableListOf(Model(output.model.name, concepts)))
+                    } else {
+                        val models = boundingBox[resultBoundingBox]
+                        models?.add(Model(output.model.name, concepts))
+                    }
                 }
             }
         }
 
-        return results
+        return boundingBox.toList()
     }
 
 }
 
 data class BoundingBox(val startX: Float, val startY: Float, val endX: Float, val endY: Float)
 data class Model(
-    val id: String,
     val name: String,
-    val boundingBox: BoundingBox,
-    val concepts: List<Pair<String, Float>>
+    val concepts: List<Concept>
 )
+data class Concept(val name: String, val value: Float)
