@@ -40,10 +40,8 @@ class GrpcClarifaiService(@Inject val clarifaiConfigurations: ClarifaiConfigurat
 
                 output.data.regionsList.map { region ->
                     val regionBoundingBox = region.regionInfo.boundingBox
-                    val resultBoundingBox = BoundingBox(
-                        regionBoundingBox.leftCol, regionBoundingBox.topRow, regionBoundingBox.rightCol,
-                        regionBoundingBox.bottomRow
-                    )
+                    val resultBoundingBox = BoundingBox(regionBoundingBox.bottomRow, regionBoundingBox.leftCol,
+                        regionBoundingBox.topRow, regionBoundingBox.rightCol)
 
                     val concepts = mutableListOf<Concept>()
                     region.data.conceptsList.map { concept ->
@@ -65,7 +63,7 @@ class GrpcClarifaiService(@Inject val clarifaiConfigurations: ClarifaiConfigurat
 
 }
 
-data class BoundingBox(val startX: Float, val startY: Float, val endX: Float, val endY: Float)
+data class BoundingBox(val bottomRow: Float, val leftColumn: Float, val topRow: Float, val rightColumn: Float)
 data class Model(
     val name: String,
     val concepts: List<Concept>

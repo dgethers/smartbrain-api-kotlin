@@ -3,6 +3,9 @@ micronaut:
     name: smartbrainApiKotlin
   env:
     deduction: false
+  server:
+    cors:
+      enabled: true
 
 clarifai:
   workflowId: Demographics
